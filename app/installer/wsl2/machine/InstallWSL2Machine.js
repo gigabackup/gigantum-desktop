@@ -70,7 +70,7 @@ const WSLMachine = Machine({
         RESOLVE: 'prompt_restart',
         // WSL not installed at all
         // WSL not installed at all
-        REJECT: 'enable_WSL'
+        REJECT: 'install_wsl'
       }
     },
     // install kernal
@@ -94,21 +94,21 @@ const WSLMachine = Machine({
     },
 
     // attempt to install WSL
-    enable_WSL: {
+    install_wsl: {
       on: {
         // on success, prompt a restart
         RESOLVE: 'prompt_restart',
         // on failure, error state
-        REJECT: 'enable_wsl_failed'
+        REJECT: 'install_wsl_failed'
       }
     },
 
     // wsl installer error state
-    enable_wsl_failed: {
+    install_wsl_failed: {
       on: {
         // try to enable WSL again
         RETRY: {
-          target: 'enable_WSL'
+          target: 'install_wsl'
         }
       }
     },
