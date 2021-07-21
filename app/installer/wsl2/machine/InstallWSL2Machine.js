@@ -47,7 +47,7 @@ const WSLMachine = Machine({
       src: () => installer.checkKernalInstall(),
       onDone: {
         // If WSL is installed AND ready to use, proceed installer
-        target: 'proceed_install'
+        target: 'check_wsl_repo'
       },
       onError: {
         // If WSL is uninstalled, prompt to install
@@ -77,7 +77,7 @@ const WSLMachine = Machine({
     install_kernel: {
       on: {
         // if kernal installs sucessfully, proceed installer
-        RESOLVE: 'proceed_install',
+        RESOLVE: 'check_wsl_repo',
         // if kernal fails to install, error state
         REJECT: 'kernel_install_failed'
       }
@@ -120,6 +120,61 @@ const WSLMachine = Machine({
         RESOLVE: 'restart_required'
         // should rejecting this prompt be possible?, unsure if we want this option
         // REJECT: 'close_installer'
+      }
+    },
+    // Checks for existance of wsl repository
+    check_wsl_repo: {
+      on: {
+        // if wsl is set up to use ubuntu 20.04, check to see if user group exists
+        RESOLVE: 'check_repo_user',
+        // if wsl repo doesn't exist, prompt the install
+        REJECT: 'prompt_download_ubuntu_repo'
+      }
+    },
+    // Prompts the download and ubuntu repo
+    prompt_download_ubuntu_repo: {
+      on: {
+        // user clicks button to initiate downlaod
+        RESOLVE: 'downloading_ubuntu_repo',
+      }
+    },
+    // loading state for downloading ubuntu repo
+    downloading_ubuntu_repo: {
+      on: {
+        // switches to install loading state
+        RESOLVE: 'install_ubuntu_repo',
+        // something in download goes wrong, error state
+        REJECT: 'download_ubuntu_failed'
+      }
+    },
+    // error state when downloading ubuntu fails
+    download_ubuntu_failed: {
+      on: {
+        // prompt user to try again
+        RETRY: 'downloading_ubuntu_repo',
+      }
+    },
+    // loading state for installing ubuntu repo and configuring it with WSL
+    install_ubuntu_repo: {
+      on: {
+        // after installing ubuntu repo and configuring it to wsl, check for user group creation
+        RESOLVE: 'check_repo_user',
+        // install fails, prompt user to try again
+        REJECT: 'install_ubuntu_failed',
+      }
+    },
+    // error state for installing ubuntu and configuring it with wsl
+    install_ubuntu_failed: {
+      on: {
+        // prompt user to try again
+        RETRY: 'install_ubuntu_repo',
+      }
+    },
+    // prompt user to follow instructions and wait for user creation within the repo. Launches Ubuntu shell for user
+    check_repo_user: {
+      on: {
+        // when user is created, proceed with install
+        RESOLVE: 'proceed_install',
       }
     },
     restart_required: {
