@@ -9,8 +9,12 @@ import './Layout.scss';
 
 type Props = {
   children: React.Node,
-  currentState: string,
-  message: '',
+  machineState: {
+    context: {
+      header: string
+    },
+    value: string
+  },
   progress: number
 };
 
@@ -18,13 +22,13 @@ export default class Container extends Component<Props> {
   props: Props;
 
   render() {
-    const { children, currentState, message, progress } = this.props;
+    const { children, machineState, progress } = this.props;
 
     return (
       <div data-tid="container">
-        <Header message={message} />
+        <Header header={machineState.context.header} />
         <div className="Layout__Body">
-          <Faq currentState={currentState} />
+          <Faq currentState={machineState.value} />
           {children}
         </div>
         <ProgressBar progress={progress} />
