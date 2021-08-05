@@ -9,7 +9,7 @@ import {
   ERROR
 } from '../machine/InstallerConstants';
 // containers
-import Layout from './layout/Layout';
+import Layout from '../layout/Layout';
 // componenets
 import CheckDockerMain from '../components/main/CheckDockerMain';
 import CheckDockerStatus from '../components/status/CheckDockerStatus';

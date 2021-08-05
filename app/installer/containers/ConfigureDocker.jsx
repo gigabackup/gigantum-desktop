@@ -11,7 +11,7 @@ import {
   RESTARTING
 } from './machine/ConfigureDockerConstants';
 // containers
-import Layout from './layout/Layout';
+import Layout from '../layout/Layout';
 // componenets
 import ConfigureDockerMain from '../components/main/ConfigureDockerMain';
 import ConfigureDockerStatus from '../components/status/ConfigureDockerStatus';

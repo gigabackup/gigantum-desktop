@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 // constants
 import { ERROR, SUCCESS } from '../machine/InstallerConstants';
 // containers
-import Layout from './layout/Layout';
+import Layout from '../layout/Layout';
 // componenets
 import ConfigureGigantumMain from '../components/main/ConfigureGigantumMain';
 import ConfigureGigantumStatus from '../components/status/ConfigureGigantumStatus';

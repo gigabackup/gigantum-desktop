@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 // containers
-import Layout from './layout/Layout';
+import Layout from '../layout/Layout';
 // componenets
 import InstallCompleteMain from '../components/main/InstallCompleteMain';
 import InstallCompleteStatus from '../components/status/InstallCompleteStatus';

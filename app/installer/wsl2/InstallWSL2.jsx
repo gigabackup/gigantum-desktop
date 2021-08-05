@@ -121,6 +121,7 @@ const InstallWSL2 = ({
   if (!wslLookupComplete) {
     return <div className="Spinner" />;
   }
+  console.log(machine);
   return (
     <div data-tid="container">
       <Layout
@@ -129,17 +130,6 @@ const InstallWSL2 = ({
         message={message}
         progress={1}
       >
-        <InstallWSL2Main machineValue={state.value} />
-        <InstallWSL2Status
-          startInstall={startInstall}
-          denyKernal={denyKernal}
-          installKernal={installKernal}
-          optOut={optOut}
-          machineValue={state.value}
-          progress={state.progress}
-          storage={storage}
-          messenger={messenger}
-        />
       </Layout>
     </div>
   );

@@ -6,7 +6,7 @@ import installDockerMachine from './machine/InstallDockerMachine';
 import { ERROR, SUCCESS } from '../machine/InstallerConstants';
 import { INSTALL } from './machine/InstallDockerConstants';
 // containers
-import Layout from './layout/Layout';
+import Layout from '../layout/Layout';
 // componenets
 import InstallDockerMain from '../components/main/InstallDockerMain';
 import InstallDockerStatus from '../components/status/InstallDockerStatus';
