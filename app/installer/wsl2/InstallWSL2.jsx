@@ -13,7 +13,8 @@ import wslStatus from '../../libs/wslStatus';
 // componenets
 import Idle from './states/idle/Idle';
 import Compatibility from './states/compatibility/CheckCompatibility';
-import CheckInstall from './states/checkInstall/CheckInstall';
+import CheckWSL2Install from './states/checkWSL2Install/CheckWSL2Install';
+import CheckKernelInstall from './states/checkKernelInstall/CheckKernelInstall';
 // css
 import './InstallWSL2.scss';
 
@@ -128,7 +129,8 @@ const InstallWSL2 = ({
   const renderMap = {
     idle: (<Idle send={send} />),
     check_compatibility: (<Compatibility send={send} />),
-    check_WSL_install: (<CheckInstall />),
+    check_WSL_install: (<CheckWSL2Install />),
+    check_kernel_install: (<CheckKernelInstall />),
   };
 
   return (
