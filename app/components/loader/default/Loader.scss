@@ -1,0 +1,8 @@
+@imports '~Styles/_imports.scss';
+
+.Loader {
+  height: 120px;
+  width: 120px;
+  background: url('~Images/loaders/spinner.svg') no-repeat center center;
+    background-size: 100px;
+}

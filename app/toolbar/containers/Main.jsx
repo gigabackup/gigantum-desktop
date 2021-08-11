@@ -78,6 +78,7 @@ class Main extends Component<Props> {
 
   render() {
     const { state, props } = this;
+      console.log(state);
     return (
       <div data-tid="container">
         <Header

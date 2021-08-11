@@ -11,11 +11,15 @@ import Layout from '../layout/Layout';
 // libs
 import wslStatus from '../../libs/wslStatus';
 // componenets
-import InstallWSL2Main from './main/InstallWSL2Main';
-import InstallWSL2Status from './status/InstallWSL2Status';
+import Idle from './states/idle/Idle';
+import Compatibility from './states/compatibility/CheckCompatibility';
+import CheckInstall from './states/checkInstall/CheckInstall';
+// css
+import './InstallWSL2.scss';
 
 const InstallWSL2 = ({
   installerInterface,
+  machine,
   messenger,
   storage,
   transition,
@@ -23,21 +27,11 @@ const InstallWSL2 = ({
   // machine
   const [state, send] = useMachine(installWSL2Machine);
   // installer methods
-  const [installer] = useInstaller();
-  // states
   const [progress, setProgress] = useState(0);
   const [wslLookupComplete, setWslLookupComplete] = useState(0);
 
 
-  useEffect(() => {
-    const wslExistsCallback = () => {
-      this.installWSL2Transition(SUCCESS);
-      this.setState({ wslLookupComplete: true });
-    };
-    wslStatus(wslExistsCallback, wslExistsCallback, () =>
-      this.setState({ wslLookupComplete: true })
-    );
-  }, []);
+
 
   /**
     @param {string} eventType
@@ -118,28 +112,35 @@ const InstallWSL2 = ({
     installerInterface.enableSubsystem(callback);
   }, [transition, installWSL2Transition, installerInterface]);
 
-  if (!wslLookupComplete) {
-    return <div className="Spinner" />;
-  }
+
+  console.log(state);
+  // useEffect(() => {
+  //   const wslExistsCallback = () => {
+  //       installWSL2Transition(SUCCESS);
+  //     this.setState({ wslComplete: true });
+  //   };
+  //   wslStatus(wslExistsCallback, wslExistsCallback, () =>
+  //     setState({ wslLookupComplete: true });
+  //   );
+  // }, []);
+
+
+  const renderMap = {
+    idle: (<Idle send={send} />),
+    check_compatibility: (<Compatibility send={send} />),
+    check_WSL_install: (<CheckInstall />),
+  };
+
   return (
     <div data-tid="container">
       <Layout
-        currentState={value}
-        section={machine.value}
-        message={message}
+        currentState="INSTALL_WSL2"
+        section="INSTALL_WSL2"
+        machineState={machine}
+        message="message"
         progress={1}
       >
-        <InstallWSL2Main machineValue={state.value} />
-        <InstallWSL2Status
-          startInstall={startInstall}
-          denyKernal={denyKernal}
-          installKernal={installKernal}
-          optOut={optOut}
-          machineValue={state.value}
-          progress={state.progress}
-          storage={storage}
-          messenger={messenger}
-        />
+        {renderMap[state.value]}
       </Layout>
     </div>
   );

@@ -23,10 +23,10 @@ export default class Container extends Component<Props> {
 
   render() {
     const { children, machineState, progress } = this.props;
-
+    console.log(machineState.context);
     return (
       <div data-tid="container">
-        <Header header={machineState.context.header} />
+        <Header header={ machineState.context && machineState.context.header ? machineState.context.header : 'Install'} />
         <div className="Layout__Body">
           <Faq currentState={machineState.value} />
           {children}

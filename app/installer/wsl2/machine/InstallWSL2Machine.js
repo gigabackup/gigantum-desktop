@@ -1,11 +1,15 @@
 import { Machine } from 'xstate';
 import installer from '../../../libs/Installer';
 
+import checkCompatibility from '../states/compatibility/CheckCompatibilityUtils';
+import checkWSLInstallStatus from '../states/checkInstall/CheckInstallUtils';
+
 const WSLMachine = Machine({
   id: 'WSL2',
   initial: 'idle',
   context: {
-    retries: 0
+    retries: 0,
+    header: 'Install WSL2'
   },
   states: {
     idle: {
@@ -17,7 +21,7 @@ const WSLMachine = Machine({
     check_compatibility: {
       invoke: {
         id: 'check_compatibility',
-        src: () => installer.checkCompatibilityWSL(),
+        src: () => checkCompatibility(),
         onDone: {
           // if compatible, check if installeda
           target: 'check_WSL_install'
@@ -31,7 +35,7 @@ const WSLMachine = Machine({
     // check to see if WSL is installed
     check_WSL_install: {
       id: 'check_WSL_install',
-      src: () => installer.checkWSLInstallStatus(),
+      src: () => checkWSLInstallStatus(),
       onDone: {
         // If WSL is installed AND ready to use, proceed installer
         target: 'check_kernel_install'

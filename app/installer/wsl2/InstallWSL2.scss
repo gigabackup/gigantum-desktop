@@ -1,0 +1,10 @@
+@imports '~Styles/_imports.scss';
+
+
+.InstallWSL2 {
+  &__main {
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+  }
+}

@@ -31,7 +31,7 @@ const stateMachine = Machine({
     [INSTALL_WSL2]: {
       meta: { message: 'Configure WSL 2', additionalInfo: '' },
       on: {
-        SUCCESS: CHECKING,
+        SUCCESS: INSTALL_DOCKER,
         ERROR
       }
     },

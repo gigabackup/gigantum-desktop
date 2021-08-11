@@ -8,7 +8,7 @@ import {
   INSTALL_WSL2
 } from '../machine/InstallerConstants';
 // containers
-import Layout from './Layout';
+import Layout from '../layout/Layout';
 // componenets
 import ErrorMain from '../components/main/ErrorMain';
 import ErrorStatus from '../components/status/ErrorStatus';
@@ -38,6 +38,7 @@ export default class Checking extends Component<Props> {
       <div data-tid="container">
         <Layout
           currentState={currentState}
+          machineState={machine}
           message={message}
           progress={progress}
         >

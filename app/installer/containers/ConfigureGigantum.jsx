@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 // constants
 import { ERROR, SUCCESS } from '../machine/InstallerConstants';
 // containers
-import Layout from './layout/Layout';
+import Layout from '../layout/Layout';
 // componenets
 import ConfigureGigantumMain from '../components/main/ConfigureGigantumMain';
 import ConfigureGigantumStatus from '../components/status/ConfigureGigantumStatus';
@@ -57,6 +57,7 @@ export default class Checking extends Component<Props> {
       <div data-tid="container">
         <Layout
           currentState={machine.value}
+          machineState={machine}
           message={message}
           progress={3}
         >

@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React from 'react';
 import 'react-circular-progressbar/dist/styles.css';
 // assets
 import './InstallWSL2Status.scss';
@@ -15,6 +15,7 @@ import {
 
 type Props = {
   denyKernal: () => void,
+  handleLaunchButton: () => void,
   installKernal: () => void,
   machine: {
     value: string
@@ -28,14 +29,21 @@ type Props = {
   messenger: () => void
 };
 
-const CheckWSL2Status = ({}) => {
+const CheckWSL2Status = ({
+  denyKernal,
+  installKernal,
+  optOut,
+  startInstall,
+  storage,
+  messenger}: Props) => {
+
+  const handleLaunchButton = () => {}
 
   /**
     @param {}
     handles install button
   */
-  handleInstallButton = () => {
-    const { messenger, startInstall, storage } = this.props;
+  const handleInstallButton = () => {
     storage.set('promptKernal', true);
     messenger.setAutoLaunchOn();
     startInstall();
@@ -45,39 +53,26 @@ const CheckWSL2Status = ({}) => {
     @param {}
     handles launch button
   */
-  handleKernalButton = () => {
-    const { props } = this;
-    props.installKernal();
+  const handleKernalButton = () => {
+    installKernal();
   };
 
   /**
     @param {}
     handles launch button
   */
-  denyKernal = () => {
-    const { props } = this;
-    props.denyKernal();
+  const handleOptOutButton = () => {
+    storage.set('wslConfigured', true);
+    optOut();
   };
-
-  /**
-    @param {}
-    handles launch button
-  */
-  handleOptOutButton = () => {
-    const { props } = this;
-    props.storage.set('wslConfigured', true);
-    props.optOut();
+  const { props } = this;
+  const progressMap = {
+    NO_PROGRESS: (
+      <div className="Layout__Status InstallWSL2Status">
+        <div className="InstallWSL2Status__noProgress" />
+      </div>
+    )
   };
-
-  render() {
-    const { props } = this;
-    const progressMap = {
-      NO_PROGRESS: (
-        <div className="Layout__Status InstallWSL2Status">
-          <div className="InstallWSL2Status__noProgress" />
-        </div>
-      )
-    };
     const kernalPrompted = props.storage.get('promptKernal');
     const renderMap = {
       [KERNAL_PROMPT]: (
@@ -100,7 +95,7 @@ const CheckWSL2Status = ({}) => {
             <button
               type="button"
               className="Btn__Status Btn--primary"
-              onClick={() => this.handleKernalButton()}
+              onClick={() => handleKernalButton()}
             >
               Update Kernel
             </button>
@@ -108,7 +103,7 @@ const CheckWSL2Status = ({}) => {
               <button
                 type="button"
                 className="Btn__Status"
-                onClick={() => this.denyKernal()}
+                onClick={() => denyKernal()}
               >
                 Opt-out of WSL2
               </button>
@@ -123,7 +118,7 @@ const CheckWSL2Status = ({}) => {
             <button
               type="button"
               className="Btn__Status Btn--primary"
-              onClick={() => this.handleLaunchButton()}
+              onClick={() => handleLaunchButton()}
             >
               Try Again
             </button>
@@ -141,7 +136,7 @@ const CheckWSL2Status = ({}) => {
             <button
               type="button"
               className="Btn__Status"
-              onClick={() => this.handleOptOutButton()}
+              onClick={() => handleOptOutButton()}
             >
               Install w/ Hyper-V
             </button>
@@ -152,7 +147,7 @@ const CheckWSL2Status = ({}) => {
             <button
               type="button"
               className="Btn__Status Btn--primary"
-              onClick={() => this.handleInstallButton()}
+              onClick={() => handleInstallButton()}
             >
               Enable & Restart
             </button>
@@ -161,7 +156,6 @@ const CheckWSL2Status = ({}) => {
       )
     };
     return renderMap[props.machine.value];
-  }
 }
 
 export default CheckWSL2Status;

@@ -11,7 +11,7 @@ import {
   RESTARTING
 } from './machine/ConfigureDockerConstants';
 // containers
-import Layout from './layout/Layout';
+import Layout from '../layout/Layout';
 // componenets
 import ConfigureDockerMain from '../components/main/ConfigureDockerMain';
 import ConfigureDockerStatus from '../components/status/ConfigureDockerStatus';
@@ -143,6 +143,7 @@ export default class ConfigureDocker extends Component<Props> {
       <div data-tid="container">
         <Layout
           currentState={machine.value}
+          machineState={machine}
           message={message}
           progress={2}
         >

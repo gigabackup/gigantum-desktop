@@ -11,6 +11,9 @@ import {
 
 const stateMachine = Machine({
   initial: PROMPT,
+  context: {
+    header: "Configure Docker",
+  },
   states: {
     [PROMPT]: {
       meta: { message: 'Configure Docker' },
