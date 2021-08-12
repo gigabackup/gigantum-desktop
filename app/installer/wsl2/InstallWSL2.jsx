@@ -125,7 +125,7 @@ const InstallWSL2 = ({
   //   );
   // }, []);
 
-
+  console.log(state.value);
   const renderMap = {
     idle: (<Idle send={send} />),
     check_compatibility: (<Compatibility send={send} />),

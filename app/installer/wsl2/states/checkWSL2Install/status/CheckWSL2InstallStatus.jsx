@@ -5,8 +5,8 @@ import { LoaderText } from '../../../../../components/loader/index';
 
 const CheckInstallStatus = () => (
     <LoaderText
-      header="Install docker"
-      message="Checking to see if docker has been installed."
+      header="Checking WSL2 Install"
+      message="Checking to see if wsl2 has been installed."
     />
   );
 

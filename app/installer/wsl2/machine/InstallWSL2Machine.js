@@ -34,28 +34,32 @@ const WSLMachine = Machine({
     },
     // check to see if WSL is installed
     check_WSL_install: {
-      id: 'check_WSL_install',
-      src: () => checkWSLInstall(),
-      onDone: {
-        // If WSL is installed AND ready to use, proceed installer
-        target: 'check_kernel_install'
-      },
-      onError: {
-        // If WSL is uninstalled, prompt to install
-        target: 'prompt_wsl_install'
+      invoke: {
+        id: 'check_WSL_install',
+        src: () => checkWSLInstall(),
+        onDone: {
+          // If WSL is installed AND ready to use, proceed installer
+          target: 'check_kernel_install'
+        },
+        onError: {
+          // If WSL is uninstalled, prompt to install
+          target: 'prompt_wsl_install'
+        }
       }
     },
 
     check_kernel_install: {
-      id: 'check_kernel_install',
-      src: () => checkKernelInstall(),
-      onDone: {
-        // If WSL is installed AND ready to use, proceed installer
-        target: 'check_wsl_repo'
-      },
-      onError: {
-        // If WSL is uninstalled, prompt to install
-        target: 'install_kernel'
+      invoke: {
+        id: 'check_kernel_install',
+        src: () => checkKernelInstall(),
+        onDone: {
+          // If WSL is installed AND ready to use, proceed installer
+          target: 'check_wsl_repo'
+        },
+        onError: {
+          // If WSL is uninstalled, prompt to install
+          target: 'install_kernel'
+        }
       }
     },
     // prompt user

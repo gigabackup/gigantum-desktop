@@ -12,13 +12,13 @@ const Main = ({ send }: Props) => (
 
       <div className="InstallWSL2__buttons">
         <button
-          onClick={() => { send('check_restart_require')}}
+          onClick={() => { send('RESOLVE')}}
           type="button"
         >
           Install Kernel
         </button>
         <button
-          onClick={() => { send('proceed_install')}}
+          onClick={() => { send('REJECT')}}
           type="button"
         >
           Skip Kernel Install
