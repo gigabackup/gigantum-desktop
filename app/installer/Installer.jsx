@@ -70,7 +70,6 @@ export default class Installer extends Component<Props> {
       header: 'Install Docker',
     });
     this.runActions(newState);
-    console.log(newState);
     // TODO use category / installNeeded
 
     this.setState({

@@ -24,7 +24,7 @@ export default class Checking extends Component<Props> {
 
   componentDidMount() {
     const { props } = this;
-    console.log(props);
+
     const dockerConfigured = props.storage.get('dockerConfigured');
     const callback = response => {
       if (response.success) {
@@ -44,7 +44,7 @@ export default class Checking extends Component<Props> {
             metaData: { spaceAvailable }
           });
         } else if (message && message.indexOf('Check WSL2') > -1) {
-          console.log(message);
+
           props.transition(INSTALL_WSL2, {
             message: 'Configure WSL 2'
           });
@@ -60,7 +60,7 @@ export default class Checking extends Component<Props> {
 
   render() {
     const { machine, message } = this.props;
-    console.log(machine);
+
     return (
       <div data-tid="container">
         <Layout

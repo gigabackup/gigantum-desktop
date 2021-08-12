@@ -4,7 +4,10 @@ import os from 'os';
 // consts
 const isWindows = process.platform === 'win32';
 
-
+/**
+* returns promise that if the os is compatible with wsl2
+* @return {Promise}
+*/
 const checkCompatibility = () => (
    new Promise((resolve, reject) => {
     if (isWindows) {

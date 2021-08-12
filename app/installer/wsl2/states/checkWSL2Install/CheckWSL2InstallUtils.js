@@ -1,6 +1,11 @@
 // vendor
 import childProcess from 'child_process';
 
+
+/**
+* returns promise that checks wsl is installed by error code response
+* @return {Promise}
+*/
 const checkWSLInstall = () => new Promise((resolve, reject) => {
     const wslCheck = childProcess.spawn('wsl', ['-l', '-v']);
 
