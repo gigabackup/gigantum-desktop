@@ -58,10 +58,22 @@ const WSLMachine = Machine({
         },
         onError: {
           // If WSL is uninstalled, prompt to install
-          target: 'install_kernel'
+          target: 'prompt_install_kernel'
         }
       }
     },
+
+    // install kernal
+    prompt_install_kernel: {
+      on: {
+        // if kernal installs sucessfully, proceed installer
+        RESOLVE: 'install_kernel',
+        // if kernal fails to install, error state
+        REJECT: 'proceed_install'
+      }
+    },
+
+
     // prompt user
     prompt_wsl_install: {
       on: {
