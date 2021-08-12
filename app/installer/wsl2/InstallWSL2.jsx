@@ -31,9 +31,7 @@ const InstallWSL2 = ({
 }) => {
   // machine
   const [state, send] = useMachine(installWSL2Machine);
-  // installer methods
-  const [progress, setProgress] = useState(0);
-  const [wslLookupComplete, setWslLookupComplete] = useState(0);
+  // installer method
 
 
 
@@ -117,19 +115,6 @@ const InstallWSL2 = ({
     installerInterface.enableSubsystem(callback);
   }, [transition, installWSL2Transition, installerInterface]);
 
-
-  console.log(state);
-  // useEffect(() => {
-  //   const wslExistsCallback = () => {
-  //       installWSL2Transition(SUCCESS);
-  //     this.setState({ wslComplete: true });
-  //   };
-  //   wslStatus(wslExistsCallback, wslExistsCallback, () =>
-  //     setState({ wslLookupComplete: true });
-  //   );
-  // }, []);
-
-  console.log(state.value);
   const renderMap = {
     idle: (<Idle send={send} />),
     check_compatibility: (<Compatibility send={send} />),

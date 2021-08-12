@@ -11,7 +11,6 @@ const checkCompatibility = () => (
       const build = os.release().split('.')[2];
       const wsl2Supported = Number(build) >= 18362;
       if (wsl2Supported) {
-        console.log('wsl2Supported', wsl2Supported);
         return resolve();
       }
       return reject();

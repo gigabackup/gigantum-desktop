@@ -4,7 +4,7 @@ import childProcess from 'os';
 const checkWSLInstall = () => {
   console.log('checkWSLINstall');
   return new Promise((resolve, reject) => {
-    const wslCheck = childProcess.spawn('powershell', ['wsl', '-l']);
+    const wslCheck = childProcess.spawn('addCommand', ['wsl', '-l']);
     console.log('wslcheck', wslCheck);
     wslCheck.on('close', code => {
       console.log('code', code)
@@ -14,6 +14,7 @@ const checkWSLInstall = () => {
       return resolve();
     }).catch((error)=> {
       console.log(error)
+      reject(error);
     });
   });
 }
