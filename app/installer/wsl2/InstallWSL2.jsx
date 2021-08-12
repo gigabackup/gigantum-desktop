@@ -15,6 +15,10 @@ import Idle from './states/idle/Idle';
 import Compatibility from './states/compatibility/CheckCompatibility';
 import CheckWSL2Install from './states/checkWSL2Install/CheckWSL2Install';
 import CheckKernelInstall from './states/checkKernelInstall/CheckKernelInstall';
+import PromptWSL2Install from './states/promptWSL2Install/PromptWSL2Install';
+import PromptKernelInstall from './states/promptKernelInstall/PromptKernelInstall';
+
+
 // css
 import './InstallWSL2.scss';
 
@@ -131,6 +135,8 @@ const InstallWSL2 = ({
     check_compatibility: (<Compatibility send={send} />),
     check_WSL_install: (<CheckWSL2Install />),
     check_kernel_install: (<CheckKernelInstall />),
+    prompt_wsl_install: (<PromptWSL2Install send={send} />),
+    prompt_kernel_install: (<PromptkernelInstall send={send} />),
   };
 
   return (
