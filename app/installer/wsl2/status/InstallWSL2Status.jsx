@@ -158,4 +158,4 @@ const CheckWSL2Status = ({
     return renderMap[props.machine.value];
 }
 
-export default CheckWSL2Status;
+// export default CheckWSL2Status;
