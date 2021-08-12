@@ -6,5 +6,13 @@
     padding: 2em;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-around;
+    align-content: flex-end;
+    margin: 1em 0;
   }
 }

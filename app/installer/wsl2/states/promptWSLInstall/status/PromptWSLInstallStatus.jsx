@@ -4,8 +4,8 @@ import React from 'react';
 
 const Status = () => (
     <section className="InstallWSL2__status">
-      <h5>Install Kernel?</h5>
-      <p>Need to install the Kernel</p>
+      <h5>Install WSL2?</h5>
+      <p>Need to install the WSL2</p>
     </section>
   );
 

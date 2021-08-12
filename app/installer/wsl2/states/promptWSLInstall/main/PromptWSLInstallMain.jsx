@@ -12,12 +12,14 @@ const Main = ({ send }: Props) => (
 
       <div className="InstallWSL2__buttons">
         <button
+          className="Btn--primary"
           onClick={() => { send('RESOLVE')}}
           type="button"
         >
           Install WSL2
         </button>
         <button
+          className="Btn--secondary"
           onClick={() => { send('REJECT')}}
           type="button"
         >

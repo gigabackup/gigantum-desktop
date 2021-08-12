@@ -1,18 +1,18 @@
 // vendor
 import React from 'react';
 // componenets
-import PromptWSLInstallMain from './main/PromptWSLInstallMain';
-import PromptWSLInstallStatus from './status/PromptWSLInstallStatus';
+import PromptKernelInstallMain from './main/PromptKernelInstallMain';
+import PromptKernelInstallStatus from './status/PromptKernelInstallStatus';
 
 type Props = {
   send: () => void
 };
 
-const PromptWSLInstall = ({ send }: Props) =>  (
+const PromptKernelInstall = ({ send }: Props) =>  (
   <>
-   <PromptWSLInstallMain send={send} />
-   <PromptWSLInstallStatus />
+   <PromptKernelInstallMain send={send} />
+   <PromptKernelInstallStatus />
   </>
 );
 
-export default PromptWSLInstall;
+export default PromptKernelInstall;
