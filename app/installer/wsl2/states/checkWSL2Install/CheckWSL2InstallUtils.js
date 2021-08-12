@@ -1,20 +1,19 @@
 // vendor
-import childProcess from 'os';
+import childProcess from 'child_process';
 
 const checkWSLInstall = () => {
-  console.log('checkWSLINstall');
   return new Promise((resolve, reject) => {
-    const wslCheck = childProcess.spawn('addCommand', ['wsl', '-l']);
-    console.log('wslcheck', wslCheck);
+    const wslCheck = childProcess.spawn('wsl', ['-l', '-v']);
+
+    wslCheck.on('error', data => {
+        console.log(data);
+    });
+
     wslCheck.on('close', code => {
-      console.log('code', code)
       if (code === 0) {
-        return reject();
+        return resolve();
       }
-      return resolve();
-    }).catch((error)=> {
-      console.log(error)
-      reject(error);
+      return reject();
     });
   });
 }
