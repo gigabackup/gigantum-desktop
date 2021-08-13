@@ -1,9 +1,11 @@
+// vendor
 import { Machine } from 'xstate';
-
+// state utils
 import checkCompatibility from '../states/compatibility/CheckCompatibilityUtils';
 import checkWSLInstall from '../states/checkWSL2Install/CheckWSL2InstallUtils';
 import checkKernelInstall from '../states/checkKernelInstall/CheckKernelInstallUtils';
 import installWSL from '../states/installWSL2/InstallWSL2Utils';
+import installKernel from '../states/installKernel/InstallKernelUtils';
 
 const WSLMachine = Machine({
   id: 'WSL2',
@@ -65,7 +67,7 @@ const WSLMachine = Machine({
     },
 
     // install kernal
-    prompt_install_kernel: {
+    prompt_kernel_install: {
       on: {
         // if kernal installs sucessfully, proceed installer
         RESOLVE: 'install_kernel',
@@ -96,11 +98,17 @@ const WSLMachine = Machine({
     },
     // install kernal
     install_kernel: {
-      on: {
-        // if kernal installs sucessfully, proceed installer
-        RESOLVE: 'check_wsl_repo',
-        // if kernal fails to install, error state
-        REJECT: 'kernel_install_failed'
+      invoke: {
+        id: 'install_kernel',
+        src: () => installKernel(),
+        onDone: {
+          // if kernal installs sucessfully, proceed installer
+          target: 'check_wsl_repo',
+        },
+        onError: {
+          // if kernal fails to install, error state
+          target: 'kernel_install_failed',
+        }
       }
     },
 

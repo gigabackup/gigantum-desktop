@@ -17,6 +17,7 @@ const checkKernelInstall = () =>
     ps.invoke()
       .then(response => {
         const formattedResponse = response.replace(/^\s+|\s+$/g, '');
+        console.log(formattedResponse);
         if (formattedResponse !== 'True') {
           ps.dispose();
           return reject(new Error('KERNAL_UNINSTALLED'));
