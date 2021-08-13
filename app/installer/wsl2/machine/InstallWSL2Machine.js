@@ -3,6 +3,7 @@ import { Machine } from 'xstate';
 import checkCompatibility from '../states/compatibility/CheckCompatibilityUtils';
 import checkWSLInstall from '../states/checkWSL2Install/CheckWSL2InstallUtils';
 import checkKernelInstall from '../states/checkKernelInstall/CheckKernelInstallUtils';
+import installWSL from '../states/installWSL2/InstallWSL2Utils';
 
 const WSLMachine = Machine({
   id: 'WSL2',
@@ -115,12 +116,20 @@ const WSLMachine = Machine({
 
     // attempt to install WSL
     install_wsl: {
-      on: {
-        // on success, prompt a restart
-        RESOLVE: 'prompt_restart',
-        // on failure, error state
-        REJECT: 'install_wsl_failed'
+      invoke :{
+        id: 'installWSL',
+        src: () => installWSL(),
+        onDone: {
+          // on success, prompt a restart
+          target: 'prompt_restart'
+        },
+        onError: {
+          // on failure, error state
+          target: 'install_wsl_failed'
+        }
+        }
       }
+
     },
 
     // wsl installer error state
