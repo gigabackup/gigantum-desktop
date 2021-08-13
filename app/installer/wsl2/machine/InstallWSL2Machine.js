@@ -61,7 +61,7 @@ const WSLMachine = Machine({
         },
         onError: {
           // If WSL is uninstalled, prompt to install
-          target: 'prompt_install_kernel'
+          target: 'prompt_kernel_install'
         }
       }
     },
