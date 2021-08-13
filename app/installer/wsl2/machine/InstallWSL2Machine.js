@@ -116,7 +116,7 @@ const WSLMachine = Machine({
 
     // attempt to install WSL
     install_wsl: {
-      invoke :{
+      invoke: {
         id: 'installWSL',
         src: () => installWSL(),
         onDone: {
@@ -127,9 +127,7 @@ const WSLMachine = Machine({
           // on failure, error state
           target: 'install_wsl_failed'
         }
-        }
       }
-
     },
 
     // wsl installer error state
