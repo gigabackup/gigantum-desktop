@@ -6,6 +6,8 @@ import checkWSLInstall from '../states/checkWSL2Install/CheckWSL2InstallUtils';
 import checkKernelInstall from '../states/checkKernelInstall/CheckKernelInstallUtils';
 import installWSL from '../states/installWSL2/InstallWSL2Utils';
 import installKernel from '../states/installKernel/InstallKernelUtils';
+import checkWSLDistro from '../states/checkWSLDistro/CheckWSLDistroUtils';
+import checkWSLUser from '../states/checkWSLUser/checkWSLUserUtils';
 
 const WSLMachine = Machine({
   id: 'WSL2',
@@ -57,7 +59,7 @@ const WSLMachine = Machine({
         src: () => checkKernelInstall(),
         onDone: {
           // If WSL is installed AND ready to use, proceed installer
-          target: 'check_wsl_repo'
+          target: 'check_wsl_distro'
         },
         onError: {
           // If WSL is uninstalled, prompt to install
@@ -158,26 +160,31 @@ const WSLMachine = Machine({
       }
     },
     // Checks for existance of wsl repository
-    check_wsl_repo: {
-      on: {
+    check_wsl_distro: {
+      invoke: {
+        id: 'check_wsl_distro',
+        src: () => checkWSLDistro(),
+        onDone: {
         // if wsl is set up to use ubuntu 20.04, check to see if user group exists
-        RESOLVE: 'check_repo_user',
+          target: 'check_wsl_user',
+        },
         // if wsl repo doesn't exist, prompt the install
-        REJECT: 'prompt_download_ubuntu_repo'
-      }
+        onError:{
+          target: 'prompt_download_ubuntu_distro'
+        }
     },
     // Prompts the download and ubuntu repo
-    prompt_download_ubuntu_repo: {
+    prompt_download_ubuntu_distro: {
       on: {
         // user clicks button to initiate downlaod
-        RESOLVE: 'downloading_ubuntu_repo',
+        RESOLVE: 'downloading_ubuntu_distro',
       }
     },
     // loading state for downloading ubuntu repo
-    downloading_ubuntu_repo: {
+    downloading_ubuntu_distro: {
       on: {
         // switches to install loading state
-        RESOLVE: 'install_ubuntu_repo',
+        RESOLVE: 'install_ubuntu_distro',
         // something in download goes wrong, error state
         REJECT: 'download_ubuntu_failed'
       }
@@ -186,14 +193,14 @@ const WSLMachine = Machine({
     download_ubuntu_failed: {
       on: {
         // prompt user to try again
-        RETRY: 'downloading_ubuntu_repo',
+        RETRY: 'downloading_ubuntu_distro',
       }
     },
     // loading state for installing ubuntu repo and configuring it with WSL
-    install_ubuntu_repo: {
+    install_ubuntu_distro: {
       on: {
         // after installing ubuntu repo and configuring it to wsl, check for user group creation
-        RESOLVE: 'check_repo_user',
+        RESOLVE: 'check_wsl_user',
         // install fails, prompt user to try again
         REJECT: 'install_ubuntu_failed',
       }
@@ -202,14 +209,26 @@ const WSLMachine = Machine({
     install_ubuntu_failed: {
       on: {
         // prompt user to try again
-        RETRY: 'install_ubuntu_repo',
+        RETRY: 'install_ubuntu_distro',
       }
     },
     // prompt user to follow instructions and wait for user creation within the repo. Launches Ubuntu shell for user
-    check_repo_user: {
+    check_wsl_user: {
+      invoke: {
+        id: 'check_wsl_user',
+        src: () => checkWSLUser(),
+        onDone: {
+          // when user is created, proceed with install
+          target: 'proceed_install',
+        },
+        onError: {
+          target: 'user_fail'
+        }
+      }
+    },
+    user_fail: {
       on: {
-        // when user is created, proceed with install
-        RESOLVE: 'proceed_install',
+        RETRY: 'check_wsl_user',
       }
     },
     restart_required: {
