@@ -58,11 +58,12 @@ const dockerOptions = (() => {
     version: 'v1.37'
   };
 
-  if (process.platform === 'win32') {
-    dockerOptionsTemp.host = '//./pipe/docker_engine';
-    // This works, on windows only if "without TLS" is enabled
-    // this.dockerOptions.host = '127.0.0.1:2375';
-  }
+  dockerOptionsTemp.host = '//./pipe/docker_wsl';
+  // if (process.platform === 'win32') {
+  //   dockerOptionsTemp.host = '//./pipe/docker_wsl';
+  //   // This works, on windows only if "without TLS" is enabled
+  //   // this.dockerOptions.host = '127.0.0.1:2375';
+  // }
 
   return dockerOptionsTemp;
 })();
