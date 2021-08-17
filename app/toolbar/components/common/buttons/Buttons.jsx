@@ -152,7 +152,7 @@ export default class Buttons extends PureComponent<Props> {
         <div className="Buttons__Actions">
           <div className="Buttons__Externals">
             <button
-              className="Btn__Toolbar Btn--external"
+              className="Btn__Toolbar"
               disabled={disableButtons}
               type="button"
               onClick={() => utils.open(defaultUrl)}
@@ -160,7 +160,7 @@ export default class Buttons extends PureComponent<Props> {
               Open in Browser
             </button>
             <button
-              className="Btn__Toolbar Btn--external"
+              className="Btn__Toolbar"
               type="button"
               onClick={() => utils.openExplorer()}
             >

@@ -19,7 +19,11 @@ if (isWindows) {
     wslRepos
       .split('\n')
       .slice(1)
-      .map(data => data.replace(/[^a-zA-Z ]/g, ''))
+      .map(data =>
+        JSON.stringify(data)
+          .replaceAll('\\u0000', '')
+          .replaceAll('\\r', '')
+      )
       .forEach(data => {
         if (
           data.toLowerCase().indexOf('ubuntu') > -1 &&
