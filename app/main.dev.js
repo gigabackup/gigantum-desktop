@@ -14,6 +14,7 @@ import { app, BrowserWindow, Menu, Tray, nativeImage } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 import isDev from 'electron-is-dev';
+import { execSync } from 'child_process';
 import MenuBuilder from './menu/menu';
 import createContextMenu from './menu/contextMenu';
 import Storage from './storage/Storage';
@@ -132,9 +133,19 @@ app.on('ready', async () => {
   const storage = new Storage();
   const install = storage.get('install');
   const appPath = 'app.html';
-  const trayIcon = isMac
+  let trayIcon = isMac
     ? `${__dirname}/assets/tray/iconTemplate.png`
     : `${__dirname}/assets/tray/iconWhite.png`;
+
+  if (isWindows) {
+    const regValue = execSync(
+      'reg query HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize /v "SystemUsesLightTheme"'
+    ).toString();
+    const lightModeOn = regValue.indexOf('0x1') > -1;
+    if (lightModeOn) {
+      trayIcon = `${__dirname}/assets/tray/iconTemplate.png`;
+    }
+  }
   const tray = new Tray(trayIcon);
 
   if (process.platform === 'linux') {
