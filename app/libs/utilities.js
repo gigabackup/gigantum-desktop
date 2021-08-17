@@ -1,6 +1,7 @@
 import open from 'open';
 import os from 'os';
 import path from 'path';
+import log from 'electron-log';
 import { execSync } from 'child_process';
 import Storage from '../storage/Storage';
 
@@ -40,6 +41,10 @@ if (useWSLPath) {
     .toString()
     .trim()}/gigantum`.replaceAll('/', '\\');
 }
+
+log.warn(`useWSLPath is set as: ${useWSLPath}`);
+log.warn(`repoName is set as: ${repoName}`);
+log.warn(`hostDirectory is set as: ${hostDirectory}`);
 
 export default {
   open: route => {

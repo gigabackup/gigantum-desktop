@@ -49,14 +49,21 @@ if (isWindows) {
 if (customStart) {
   try {
     const rawNvidiaOutput = execSync(
-      "wsl -e bash -c 'nvidia-smi --query-gpu=driver_version --format=csv,noheader'"
+      'wsl -e bash -c "nvidia-smi --query-gpu=driver_version --format=csv,noheader"'
     ).toString();
-    const nvidiaPath = execSync("wsl -e bash -c 'which nvidia-smi'").toString();
+    log.warn(`rawNvidiaOutput is set as: ${rawNvidiaOutput}`);
+
+    const nvidiaPath = execSync('wsl -e bash -c "which nvidia-smi"').toString();
+    log.warn(`nvidiaPath is set as: ${nvidiaPath}`);
+
     const allVersions = rawNvidiaOutput.split('\n').filter(data => data !== '');
     const nvidiaVersions = allVersions[0].trim().split('.');
     const formattedNvidiaVersion = `${nvidiaVersions[0]}.${nvidiaVersions[1]}`;
     nvidiaVariables = `-e NVIDIA_DRIVER_VERSION=${formattedNvidiaVersion} -e NVIDIA_NUM_GPUS=${allVersions.length} -e NVIDIA_SMI_PATH=${nvidiaPath}`;
+    log.warn(`nvidiaPath is set as: ${nvidiaVariables}`);
   } catch (error) {
+    log.warn(`error is set as (nvidia): ${error}`);
+
     console.log('unable to run nvidia-smi - assuming no GPU');
   }
 }
