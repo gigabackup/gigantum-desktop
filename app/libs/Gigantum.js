@@ -6,6 +6,7 @@ import throughJSON from 'through-json';
 import through from 'through2';
 import uuidv4 from 'uuid/v4';
 import log from 'electron-log';
+import { execSync } from 'child_process';
 // config
 import utils from './utilities';
 import Docker from './Docker';
@@ -14,6 +15,9 @@ import getContainerConfig from './containerConfig';
 
 const isWindows = process.platform === 'win32';
 
+let customStart = false;
+let nvidiaVariables = '';
+
 class ShellMoc {
   constructor(state) {
     this.state = state;
@@ -21,6 +25,41 @@ class ShellMoc {
 }
 
 const Shell = isWindows ? require('node-powershell') : ShellMoc;
+
+if (isWindows) {
+  try {
+    const wslRepos = execSync('wsl -l').toString();
+    wslRepos
+      .split('\n')
+      .slice(1)
+      .map(data => data.replace(/[^a-zA-Z ]/g, ''))
+      .forEach(data => {
+        if (
+          data.toLowerCase().indexOf('ubuntu') > -1 &&
+          data.toLowerCase().indexOf('default') > -1
+        ) {
+          customStart = true;
+        }
+      });
+  } catch (error) {
+    console.log('WSL not set up');
+  }
+}
+
+if (customStart) {
+  try {
+    const rawNvidiaOutput = execSync(
+      "wsl -e bash -c 'nvidia-smi --query-gpu=driver_version --format=csv,noheader'"
+    ).toString();
+    const nvidiaPath = execSync("wsl -e bash -c 'which nvidia-smi'").toString();
+    const allVersions = rawNvidiaOutput.split('\n').filter(data => data !== '');
+    const nvidiaVersions = allVersions[0].trim().split('.');
+    const formattedNvidiaVersion = `${nvidiaVersions[0]}.${nvidiaVersions[1]}`;
+    nvidiaVariables = `-e NVIDIA_DRIVER_VERSION=${formattedNvidiaVersion} -e NVIDIA_NUM_GPUS=${allVersions.length} -e NVIDIA_SMI_PATH=${nvidiaPath}`;
+  } catch (error) {
+    console.log('unable to run nvidia-smi - assuming no GPU');
+  }
+}
 
 class Gigantum extends Docker {
   trackedContainer = null;
@@ -74,21 +113,25 @@ class Gigantum extends Docker {
   createGigantum(callback) {
     this.stopProjects();
 
-    const configCallback = containerConfig => {
-      this.dockerode
-        .createContainer(
-          Object.assign(containerConfig, { name: config.containerName })
-        )
-        .then(gigantumContainer => {
-          callback({ success: true, running: false, gigantumContainer });
-          return null;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    };
+    if (customStart) {
+      this.enforceWSL2Directory(callback);
+    } else {
+      const configCallback = containerConfig => {
+        this.dockerode
+          .createContainer(
+            Object.assign(containerConfig, { name: config.containerName })
+          )
+          .then(gigantumContainer => {
+            callback({ success: true, running: false, gigantumContainer });
+            return null;
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      };
 
-    getContainerConfig(this.dockerode, configCallback);
+      getContainerConfig(this.dockerode, configCallback);
+    }
   }
 
   /**
@@ -108,9 +151,8 @@ class Gigantum extends Docker {
         this.checkImage(callback);
         return null;
       })
-      .catch(err => {
+      .catch(() => {
         this.checkImage(callback);
-        console.log(err);
         fileCheck.dispose();
       });
   };
@@ -137,6 +179,35 @@ class Gigantum extends Docker {
         callback({ success: false, error: { message: 'no such image' } });
         ps.dispose();
       });
+  };
+
+  /**
+    @param {Function} callback
+    starts container with wsl2
+    @calls {}
+  */
+  startWSL2 = callback => {
+    try {
+      const command = `wsl -e bash -c "docker run --name ${config.containerName} --rm -v labmanager_share_vol:/mnt/share -v $HOME/gigantum:/mnt/gigantum -v /var/run/docker.sock:/var/run/docker.sock -e HOST_WORK_DIR=$HOME/gigantum -e LOCAL_USER_ID=1000 ${nvidiaVariables} -p 127.0.0.1:10000:10000 -d gigantum/labmanager:${config.imageTag}"`;
+      execSync(command.replace('\n', ''));
+      const gigantumContainer = this.dockerode.getContainer(
+        config.containerName
+      );
+      callback({
+        success: true,
+        running: false,
+        gigantumContainer,
+        customStart: true
+      });
+    } catch (error) {
+      if (error.toString().indexOf(' port is already allocated') > -1) {
+        callback({
+          success: false,
+          error: { message: 'failed: port is already allocated' }
+        });
+      }
+      console.log(error);
+    }
   };
 
   /**
@@ -181,7 +252,9 @@ class Gigantum extends Docker {
   */
   start = callback => {
     const getContainerCallback = response => {
-      if (!response.running && response.success) {
+      if (response.customStart) {
+        this.checkApi(callback, { openPopup: true });
+      } else if (!response.running && response.success) {
         response.gigantumContainer
           .start()
           .then(() => {

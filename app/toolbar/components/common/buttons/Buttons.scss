@@ -8,6 +8,10 @@
     border-bottom: 1px solid $grey-border;
   }
 
+  &__Externals {
+    display: flex;
+  }
+
   &__badge {
     background: $orange;
     color: $white;
@@ -65,11 +69,12 @@
     border: 0;
   }
   &--external {
+    flex: 1;
     background: white url('~Images/icons/offsite-primary.svg') no-repeat center
-      right 90px;
+      right 10px;
     &:hover {
       background: $primary url('~Images/icons/offsite.svg') no-repeat center
-        right 90px;
+        right 10px;
     }
   }
   &__Link {
