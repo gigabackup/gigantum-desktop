@@ -107,6 +107,7 @@ export default class InstallDocker extends Component<Props> {
       <div data-tid="container">
         <Layout
           currentState={machine.value}
+          machineState={machine}
           message={message}
           progress={1}
         >

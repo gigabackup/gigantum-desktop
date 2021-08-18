@@ -24,6 +24,7 @@ class Toolbar extends Component<Props> {
 
   render() {
     const { storage } = this.props;
+
     return (
       <div className="Routes">
         <Router>

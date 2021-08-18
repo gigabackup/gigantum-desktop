@@ -143,6 +143,7 @@ export default class ConfigureDocker extends Component<Props> {
       <div data-tid="container">
         <Layout
           currentState={machine.value}
+          machineState={machine}
           message={message}
           progress={2}
         >

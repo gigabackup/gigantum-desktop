@@ -1,11 +1,15 @@
 import { Machine } from 'xstate';
-import installer from '../../../libs/Installer';
+
+import checkCompatibility from '../states/compatibility/CheckCompatibilityUtils';
+import checkWSLInstall from '../states/checkWSL2Install/CheckWSL2InstallUtils';
+import checkKernelInstall from '../states/checkKernelInstall/CheckKernelInstallUtils';
 
 const WSLMachine = Machine({
   id: 'WSL2',
   initial: 'idle',
   context: {
-    retries: 0
+    retries: 0,
+    header: 'Install WSL2'
   },
   states: {
     idle: {
@@ -17,7 +21,7 @@ const WSLMachine = Machine({
     check_compatibility: {
       invoke: {
         id: 'check_compatibility',
-        src: () => installer.checkCompatibilityWSL(),
+        src: () => checkCompatibility(),
         onDone: {
           // if compatible, check if installeda
           target: 'check_WSL_install'
@@ -30,30 +34,46 @@ const WSLMachine = Machine({
     },
     // check to see if WSL is installed
     check_WSL_install: {
-      id: 'check_WSL_install',
-      src: () => installer.checkWSLInstallStatus(),
-      onDone: {
-        // If WSL is installed AND ready to use, proceed installer
-        target: 'check_kernel_install'
-      },
-      onError: {
-        // If WSL is uninstalled, prompt to install
-        target: 'prompt_wsl_install'
+      invoke: {
+        id: 'check_WSL_install',
+        src: () => checkWSLInstall(),
+        onDone: {
+          // If WSL is installed AND ready to use, proceed installer
+          target: 'check_kernel_install'
+        },
+        onError: {
+          // If WSL is uninstalled, prompt to install
+          target: 'prompt_wsl_install'
+        }
       }
     },
 
     check_kernel_install: {
-      id: 'check_kernel_install',
-      src: () => installer.checkKernalInstall(),
-      onDone: {
-        // If WSL is installed AND ready to use, proceed installer
-        target: 'check_wsl_repo'
-      },
-      onError: {
-        // If WSL is uninstalled, prompt to install
-        target: 'install_kernel'
+      invoke: {
+        id: 'check_kernel_install',
+        src: () => checkKernelInstall(),
+        onDone: {
+          // If WSL is installed AND ready to use, proceed installer
+          target: 'check_wsl_repo'
+        },
+        onError: {
+          // If WSL is uninstalled, prompt to install
+          target: 'prompt_install_kernel'
+        }
       }
     },
+
+    // install kernal
+    prompt_install_kernel: {
+      on: {
+        // if kernal installs sucessfully, proceed installer
+        RESOLVE: 'install_kernel',
+        // if kernal fails to install, error state
+        REJECT: 'proceed_install'
+      }
+    },
+
+
     // prompt user
     prompt_wsl_install: {
       on: {

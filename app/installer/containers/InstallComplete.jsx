@@ -17,6 +17,7 @@ export default class Checking extends Component<Props> {
       <div data-tid="container">
         <Layout
           currentState={machine.value}
+          machineState={mahine}
           message={message}
           progress={4}
         >
