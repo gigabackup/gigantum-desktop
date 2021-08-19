@@ -172,6 +172,7 @@ const WSLMachine = Machine({
         onError:{
           target: 'prompt_download_ubuntu_distro'
         }
+      }
     },
     // Prompts the download and ubuntu repo
     prompt_download_ubuntu_distro: {

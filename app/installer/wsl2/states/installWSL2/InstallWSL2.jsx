@@ -1,15 +1,15 @@
 // vendor
 import React from 'react';
 // componenets
-import CheckWSL2InstallMain from './main/CheckWSL2InstallMain';
-import CheckWSL2InstallStatus from './status/CheckWSL2InstallStatus';
+import InstallWSL2Main from './main/InstallWSL2Main';
+import InstallWSL2Status from './status/InstallWSL2Status';
 
 
-const CheckWSL2Install = () =>  (
+const InstallWSL2 = () =>  (
   <>
-   <CheckWSL2InstallMain />
-   <CheckWSL2InstallStatus />
+   <InstallWSL2Main />
+   <InstallWSL2Status />
   </>
 );
 
-export default CheckWSL2Install;
+export default InstallWSL2;

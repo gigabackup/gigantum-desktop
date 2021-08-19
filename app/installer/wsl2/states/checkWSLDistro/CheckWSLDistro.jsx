@@ -1,15 +1,15 @@
 // vendor
 import React from 'react';
 // componenets
-import CheckKernelInstallMain from './main/CheckKernelInstallMain';
-import CheckKernelInstallStatus from './status/CheckKernelInstallStatus';
+import CheckWSLDistroMain from './main/CheckWSLDistroMain';
+import CheckWSLDistroStatus from './status/CheckWSLDistroStatus';
 
 
-const CheckKernelInstall = () =>  (
+const CheckWSLDistro = () =>  (
   <>
-   <CheckKernelInstallMain />
-   <CheckKernelInstallStatus />
+   <CheckWSLDistroMain />
+   <CheckWSLDistroStatus />
   </>
 );
 
-export default CheckKernelInstall;
+export default CheckWSLDistro;

@@ -1,15 +1,15 @@
 // vendor
 import React from 'react';
 // componenets
-import CheckKernelInstallMain from './main/CheckKernelInstallMain';
-import CheckKernelInstallStatus from './status/CheckKernelInstallStatus';
+import InstallKernelMain from './main/InstallKernelMain';
+import InstallKernelStatus from './status/InstallKernelStatus';
 
 
-const CheckKernelInstall = () =>  (
+const InstallKernel = () =>  (
   <>
-   <CheckKernelInstallMain />
-   <CheckKernelInstallStatus />
+   <InstallKernelMain />
+   <InstallKernelStatus />
   </>
 );
 
-export default CheckKernelInstall;
+export default InstallKernel;

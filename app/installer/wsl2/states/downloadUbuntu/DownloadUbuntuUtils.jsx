@@ -29,13 +29,13 @@ const downloadUbuntu = () => {
         })
         .then(() => {
           console.log('DONE DOWNLOADING');
-  
+
           callback({
             success: true,
             finished: true,
             // TODO update state machine with data containing progress and pass in downloadedFile path
           });
-  
+
           return null;
         })
         .catch(error => {

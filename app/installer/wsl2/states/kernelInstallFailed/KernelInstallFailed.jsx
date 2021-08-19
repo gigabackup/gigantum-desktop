@@ -6,7 +6,7 @@ type Props = {
 };
 
 
-const Main = ({send}: Props) => (
+const KernelInstallFailed = ({send}: Props) => (
     <section className="InstallWSL2__main">
       <h5>Kernel</h5>
       <p>Kernel install failed try again.</p>
@@ -22,4 +22,4 @@ const Main = ({send}: Props) => (
   );
 
 
-export default Main;
+export default KernelInstallFailed;

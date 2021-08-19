@@ -8,7 +8,7 @@ import childProcess from 'child_process';
 const checkWSLUser = () =>
   new Promise((resolve, reject) => {
 
-    const wsl =  childProcess.spawn('wsl', ['-u', 'gigantum']);
+    const wsl =  childProcess.spawn('wsl', ['-u', 'r']);
 
       // catch error and deal with in stdout
       wsl.on('error', (error) => {
