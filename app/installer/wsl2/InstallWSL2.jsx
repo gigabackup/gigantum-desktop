@@ -12,6 +12,9 @@ import CheckWSL2Install from './states/checkWSL2Install/CheckWSL2Install';
 import CheckKernelInstall from './states/checkKernelInstall/CheckKernelInstall';
 import PromptWSL2Install from './states/promptWSLInstall/PromptWSLInstall';
 import PromptKernelInstall from './states/promptKernelInstall/PromptKernelInstall';
+import InstallWSL2Step from './states/installWSL2/InstallWSL2';
+import InstallKernel from './states/installKernel/InstallKernel';
+import KernelInstallFailed from './states/kernelInstallFailed/KernelInstallFailed';
 
 
 // css
@@ -34,6 +37,9 @@ const InstallWSL2 = ({
     check_kernel_install: (<CheckKernelInstall />),
     prompt_wsl_install: (<PromptWSL2Install send={send} />),
     prompt_kernel_install: (<PromptKernelInstall send={send} />),
+    install_wsl: (<InstallWSL2Step />),
+    install_kernel: (<InstallKernel />),
+    kernel_install_failed: (<KernelInstallFailed send={send} />)
   };
 
   return (

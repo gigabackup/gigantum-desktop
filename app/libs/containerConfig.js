@@ -70,12 +70,14 @@ const dockerizeMountPath = (dockerode, callback) => {
 
   dockerode.run(
     `${imageLabel}:${imageTag}`,
-    ['-f', '/dev/null'],
+    ['-v', '-f', '/dev/null'],
     process.stdout,
+
     {
+      WorkingDir: 'home/calum/gigantum',
       Entrypoint: '/usr/bin/tail',
       HostConfig: {
-        Binds: [`${hostDirectory}:/mnt/gigantum`]
+        Binds: [`${hostDirectory}:/mnt/gigantum:rw`]
       }
     },
     {
@@ -118,10 +120,13 @@ const configReturn = (containerDirectory, callback) => {
           }
         ]
       },
-      Volumes: {},
+      Volumes: {
+        [`${hostDirectory}:/mnt/gigantum:${
+          os.platform() === 'darwin' ? 'cached' : 'rw'
+        }`]: {}
+      },
       Tty: false
     },
-    Env
   });
 };
 
